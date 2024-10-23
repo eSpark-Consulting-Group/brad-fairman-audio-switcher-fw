@@ -2,7 +2,7 @@
 #### Client Name: Brad Fairman
 
 ## Project Requirements
-The product is going to have an audio player constantly looping audio to the input of the device. The audio input can come in from two ways. Either the Headphone Jack 3.5mm OR RCA Left Input and Right input Jacks. The device (Analog Audio Switcher) will be silent until a button is pressed. Based on the button press the outputs will go live for 30 seconds and then go silent again. The corresponding LED will light up to indicate the audio channels that have been activated by the button press.
+The product is going to have an audio player constantly looping audio to the input of the device. The audio input can come in from two ways. Either the Headphone Jack 3.5mm OR RCA Left Input and Right input Jacks. The device (Analog Audio Switcher) will be silent until a button is pressed. Based on the button press the outputs will go live for 30 seconds and then go silent again. The corresponding LED will light up to indicate the audio channels that have been activated by the button press. Please also note that volume should have a range from 1 to 10 (min - max) with an inc/dec of 1.
 
 ### Button Layout
 1. Towers
