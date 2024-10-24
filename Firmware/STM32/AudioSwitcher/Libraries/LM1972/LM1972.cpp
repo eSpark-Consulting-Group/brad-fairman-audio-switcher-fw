@@ -1,0 +1,145 @@
+
+#include "LM1972.h"
+
+#define MAX_ATTENUATION		78
+
+LM1972::LM1972(SPI_HandleTypeDef* spi, GPIO_Pin_t cs, GPIO_Pin_t up, GPIO_Pin_t dwn, GPIO_Pin_t upLED, GPIO_Pin_t dwnLED)
+: _spi(spi), _csPin(cs), _volUpSW(up), _volDownSW(dwn), _volUpLED(upLED), _volDownLED(dwnLED), level(0)
+{
+	_up_SW = new Button(_volUpSW);
+	_dwn_SW = new Button(_volDownSW);
+//	this->m_attenuation = level_10;
+	this->setAttenuationDB(level);
+}
+
+void LM1972::processButtons()
+{
+	_up_SW->update();
+	_dwn_SW->update();
+
+	if(RELEASED == _up_SW->getPressDuration() && HAL_GPIO_ReadPin(_volUpLED.port, _volUpLED.pin))
+	{
+		_upSwState = RELEASED;
+		HAL_GPIO_WritePin(_volUpLED.port, _volUpLED.pin, GPIO_PIN_RESET);
+	}
+	if(RELEASED == _dwn_SW->getPressDuration() && HAL_GPIO_ReadPin(_volUpLED.port, _volUpLED.pin))
+	{
+		_dwnSwState = RELEASED;
+		HAL_GPIO_WritePin(_volUpLED.port, _volUpLED.pin, GPIO_PIN_RESET);
+	}
+	if(RELEASED != _up_SW->getPressDuration() && _upSwState == RELEASED)
+	{
+		if(level < 10 )
+		{	this->setAttenuationDB((MAX_ATTENUATION/10)*(++level));	}
+		HAL_GPIO_WritePin(_volUpLED.port, _volUpLED.pin, GPIO_PIN_SET);
+		_upSwState = SHORT_PRESS;
+	}
+	if(RELEASED != _dwn_SW->getPressDuration() && _dwnSwState == RELEASED)
+	{
+		if(level > 0 )
+		{	this->setAttenuationDB((MAX_ATTENUATION/10)*(--level));	}
+		HAL_GPIO_WritePin(_volUpLED.port, _volUpLED.pin, GPIO_PIN_SET);
+		_dwnSwState = SHORT_PRESS;
+	}
+}
+
+void LM1972::setAttenuationDB(uint8_t decibel)
+{
+    // Default: Mute, actually -104dB, displayed as -79dB.
+    uint8_t attenuation = 128;
+
+    // -48dB to -78dB: 1dB per step.
+    if (decibel >= 48 && decibel <= 78)
+    {
+        // Attenuation levels 96 to 126
+        attenuation = (decibel - 48) + 96;
+    }
+
+    // -0dB to -48dB: 0.5dB per step.
+    if (decibel < 48)
+    {
+        // Attenuation levels 0 to 96
+        attenuation = (decibel * 2);
+    }
+
+    this->setAttenuation(attenuation);
+}
+
+void LM1972::setAttenuation(uint8_t attenuation)
+{
+    this->set(channel1, attenuation);
+    this->set(channel2, attenuation);
+    this->set(channel3, attenuation);
+    this->m_attenuation = attenuation;
+}
+
+uint8_t LM1972::getAttenuation()
+{
+    return this->m_attenuation;
+}
+
+uint8_t LM1972::getAttenuationDB()
+{
+
+    // Get shadowed attenuation.
+    uint8_t attenuation = this->getAttenuation();
+
+    // Default: Mute, -79dB (actually even -104dB).
+    uint8_t decibel = 79;
+
+    // Attenuation levels 96 to 126: 1dB per step.
+    if (attenuation >= 96 && attenuation <= 126)
+    {
+        // -48dB to -78dB
+        decibel = (attenuation - 96) + 48;
+    }
+
+    // Attenuation levels 0 to 96: 0.5dB per step.
+    if (attenuation < 96)
+    {
+        // -0dB to -48dB
+        decibel = (attenuation / 2);
+    }
+
+    return decibel;
+}
+
+void LM1972::set(LM1972::ADDRESS addr, uint8_t data)
+{
+	HAL_GPIO_WritePin(_csPin.port, _csPin.pin, GPIO_PIN_RESET);
+//    m_load.low();
+//    m_clk.off();
+    HAL_Delay(1);
+
+//	// bit-banging
+//    for (uint8_t i = 0; i < 8; i++) {
+//        m_din << (addr & (1 << (7-i)));
+//        DELAY(1);
+//        m_clk.on();
+//        DELAY(1);
+//        m_clk.off();
+//    }
+//
+//	// bit-banging
+//    for (uint8_t i = 0; i < 8; i++) {
+//        m_din << (data & (1 << (7-i)));
+//        DELAY(1);
+//        m_clk.on();
+//        DELAY(1);
+//        m_clk.off();
+//    }
+
+    uint8_t packet = addr;
+    HAL_SPI_Transmit(_spi, &packet, sizeof(packet), 5);
+    HAL_SPI_Transmit(_spi, &data, sizeof(data), 5);
+
+    //m_din.write((uint8_t) addr, m_clk);
+    //m_din.write((uint8_t) data, m_clk);
+
+    HAL_Delay(1);
+//    m_load.high();
+//    m_clk.off();
+//    m_din.off();
+	HAL_GPIO_WritePin(_csPin.port, _csPin.pin, GPIO_PIN_SET);
+
+}

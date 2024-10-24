@@ -1,0 +1,2 @@
+../Libraries/Button/button.cpp:4:6:void Button::update()	40	static
+../Libraries/Button/button.cpp:50:16:BUTTON_STATE_e Button::getPressDuration()	16	static

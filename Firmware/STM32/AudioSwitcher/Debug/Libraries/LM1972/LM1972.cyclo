@@ -1,0 +1,8 @@
+C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher/Libraries/Button/button.hpp:21:9:Button::Button(GPIO_Pin_t)	1
+../Libraries/LM1972/LM1972.cpp:6:1:LM1972::LM1972(SPI_HandleTypeDef*, GPIO_Pin_t, GPIO_Pin_t, GPIO_Pin_t, GPIO_Pin_t, GPIO_Pin_t)	1
+../Libraries/LM1972/LM1972.cpp:15:6:void LM1972::processButtons()	15
+../Libraries/LM1972/LM1972.cpp:46:6:void LM1972::setAttenuationDB(uint8_t)	4
+../Libraries/LM1972/LM1972.cpp:68:6:void LM1972::setAttenuation(uint8_t)	1
+../Libraries/LM1972/LM1972.cpp:76:9:uint8_t LM1972::getAttenuation()	1
+../Libraries/LM1972/LM1972.cpp:81:9:uint8_t LM1972::getAttenuationDB()	4
+../Libraries/LM1972/LM1972.cpp:107:6:void LM1972::set(ADDRESS, uint8_t)	1
