@@ -49,16 +49,17 @@ I2C_HandleTypeDef hi2c2;
 SPI_HandleTypeDef hspi2;
 
 /* USER CODE BEGIN PV */
-MAX14661*	outputMUX;
 LM1972*		volumeController;
-//LM1972*		volumeControlIC;
+MAX14661*	outputMUX;
 
-Button	output1({OUT1_SW_GPIO_Port, OUT1_SW_Pin});		// Towers
-Button	output2({OUT2_SW_GPIO_Port, OUT2_SW_Pin});		// BookShelfs
-Button	output3({OUT3_SW_GPIO_Port, OUT3_SW_Pin});		// Center Channel Bookshelves and heights
-Button	output4({OUT4_SW_GPIO_Port, OUT4_SW_Pin});		// Add Subwoofer
-Button	output5({OUT5_SW_GPIO_Port, OUT5_SW_Pin});		// Everything
-//Button	output6({OUT6_SW_GPIO_Port, OUT6_SW_Pin});
+Button	volUP({VOLUP_SW_GPIO_Port, VOLUP_SW_Pin}, {VOLUP_LED_GPIO_Port, VOLUP_LED_Pin});
+Button	volDWN({VOLDWN_SW_GPIO_Port, VOLDWN_SW_Pin}, {VOLDWN_LED_GPIO_Port, VOLDWN_LED_Pin});
+Button	output1({OUT1_SW_GPIO_Port, OUT1_SW_Pin}, {OUT1_LED_GPIO_Port, OUT1_LED_Pin});		// Towers
+Button	output2({OUT2_SW_GPIO_Port, OUT2_SW_Pin}, {OUT2_LED_GPIO_Port, OUT2_LED_Pin});		// BookShelfs
+Button	output3({OUT3_SW_GPIO_Port, OUT3_SW_Pin}, {OUT3_LED_GPIO_Port, OUT3_LED_Pin});		// Center Channel Bookshelves and heights
+Button	output4({OUT4_SW_GPIO_Port, OUT4_SW_Pin}, {OUT4_LED_GPIO_Port, OUT4_LED_Pin});		// Add Subwoofer
+Button	output5({OUT5_SW_GPIO_Port, OUT5_SW_Pin}, {OUT5_LED_GPIO_Port, OUT5_LED_Pin});		// Everything
+//Button	output6({OUT6_SW_GPIO_Port, OUT6_SW_Pin}, {OUT6_LED_GPIO_Port, OUT6_LED_Pin});
 
 
 Output* outputs[NUM_OF_OUTPUTS];//(outputMUX, {});
@@ -127,14 +128,14 @@ int main(void)
   MX_I2C2_Init();
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
+  volumeController = new LM1972(&hspi2, {SPI2_CS_GPIO_Port, SPI2_CS_Pin}, &volUP, &volDWN);
   outputMUX = new MAX14661(&hi2c2, MAX14661_ADDRESS);
-  volumeController = new LM1972(&hspi2, {SPI2_CS_GPIO_Port, SPI2_CS_Pin}, {VOLUP_SW_GPIO_Port, VOLUP_SW_Pin}, {VOLDWN_SW_GPIO_Port, VOLDWN_SW_Pin}, {VOLUP_LED_GPIO_Port, VOLUP_LED_Pin}, {VOLDWN_LED_GPIO_Port, VOLDWN_LED_Pin});
 
-  outputs[0] = new Output(outputMUX, {OUT1_LED_GPIO_Port,OUT1_LED_Pin}, 0, 1);
-  outputs[1] = new Output(outputMUX, {OUT2_LED_GPIO_Port,OUT2_LED_Pin}, 3, 4);
-  outputs[2] = new Output(outputMUX, {OUT3_LED_GPIO_Port,OUT3_LED_Pin}, 6, 7);
-  outputs[3] = new Output(outputMUX, {OUT4_LED_GPIO_Port,OUT4_LED_Pin}, 8, 9);
-  outputs[4] = new Output(outputMUX, {OUT5_LED_GPIO_Port,OUT5_LED_Pin}, 11, 12);
+  outputs[0] = new Output(outputMUX, {FRONT_SEL_LED_GPIO_Port, FRONT_SEL_LED_Pin}, 0, 1);
+  outputs[1] = new Output(outputMUX, {REAR_SEL_LED_GPIO_Port, REAR_SEL_LED_Pin}, 3, 4);
+  outputs[2] = new Output(outputMUX, {REAR2_SEL_LED_GPIO_Port, REAR2_SEL_LED_Pin}, 6, 7);
+  outputs[3] = new Output(outputMUX, {SUB_SEL_LED_GPIO_Port, SUB_SEL_LED_Pin}, 8, 9);
+  outputs[4] = new Output(outputMUX, {CENTER_SEL_LED_GPIO_Port, CENTER_SEL_LED_Pin}, 11, 12);
 
   outputControl[0] = new OutputControl(&output1,outputs[0]);
   outputControl[1] = new OutputControl(&output2,outputs[1]);
@@ -173,9 +174,13 @@ int main(void)
 			  timeStamp = HAL_GetTick();
 			  HAL_GPIO_TogglePin(STATUS_GPIO_Port, STATUS_Pin);
 		  }
+	  	  HAL_GPIO_WritePin(MUTE_GPIO_Port, MUTE_Pin, GPIO_PIN_SET);
 	  }
 	  else
-		  HAL_GPIO_WritePin(STATUS_GPIO_Port, STATUS_Pin, GPIO_PIN_RESET);
+	  {
+	  	  HAL_GPIO_WritePin(STATUS_GPIO_Port, STATUS_Pin, GPIO_PIN_RESET);
+	  	  HAL_GPIO_WritePin(MUTE_GPIO_Port, MUTE_Pin, GPIO_PIN_RESET);
+	  }
   }
   /* USER CODE END 3 */
 }

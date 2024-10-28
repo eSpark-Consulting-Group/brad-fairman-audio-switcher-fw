@@ -45,7 +45,7 @@ public:
     /// @param	clk Pin connected to LM1972 Clock signal
     /// @param	load Pin connected to LM1972 Load signal
     ///
-    LM1972(SPI_HandleTypeDef* spi, GPIO_Pin_t cs, GPIO_Pin_t up, GPIO_Pin_t dwn, GPIO_Pin_t upLED, GPIO_Pin_t dwnLED);
+    LM1972(SPI_HandleTypeDef* spi, GPIO_Pin_t cs, Button* up, Button* dwn);
 
 //    void setup();
     void processButtons();
@@ -86,17 +86,13 @@ private:
     uint8_t level = 0;
 
     SPI_HandleTypeDef* _spi;
-    GPIO_Pin_t _csPin;
-    GPIO_Pin_t _volUpSW;
-    GPIO_Pin_t _volDownSW;
-    GPIO_Pin_t _volUpLED;
-    GPIO_Pin_t _volDownLED;
-
     Button* _up_SW;
     Button* _dwn_SW;
 
-    BUTTON_STATE_e _upSwState;
-    BUTTON_STATE_e _dwnSwState;
+    GPIO_Pin_t _csPin;
+
+    GPIO_PinState _upSwState;
+    GPIO_PinState _dwnSwState;
 
 
     void set(LM1972::ADDRESS addr, uint8_t data);

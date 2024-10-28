@@ -3,12 +3,13 @@
 
 #define MAX_ATTENUATION		78
 
-LM1972::LM1972(SPI_HandleTypeDef* spi, GPIO_Pin_t cs, GPIO_Pin_t up, GPIO_Pin_t dwn, GPIO_Pin_t upLED, GPIO_Pin_t dwnLED)
-: _spi(spi), _csPin(cs), _volUpSW(up), _volDownSW(dwn), _volUpLED(upLED), _volDownLED(dwnLED), level(0)
+LM1972::LM1972(SPI_HandleTypeDef* spi, GPIO_Pin_t cs, Button* up, Button* dwn)
+: _spi(spi), _csPin(cs), _up_SW(up), _dwn_SW(dwn), level(0)
 {
-	_up_SW = new Button(_volUpSW);
-	_dwn_SW = new Button(_volDownSW);
-//	this->m_attenuation = level_10;
+	// _up_SW = new Button(_volUpSW);
+	// _dwn_SW = new Button(_volDownSW);
+	// this->m_attenuation = level_10;
+	HAL_GPIO_WritePin(_csPin.port, _csPin.pin, GPIO_PIN_SET);
 	this->setAttenuationDB(level);
 }
 
@@ -17,30 +18,29 @@ void LM1972::processButtons()
 	_up_SW->update();
 	_dwn_SW->update();
 
-	if(RELEASED == _up_SW->getPressDuration() && HAL_GPIO_ReadPin(_volUpLED.port, _volUpLED.pin))
-	{
-		_upSwState = RELEASED;
-		HAL_GPIO_WritePin(_volUpLED.port, _volUpLED.pin, GPIO_PIN_RESET);
-	}
-	if(RELEASED == _dwn_SW->getPressDuration() && HAL_GPIO_ReadPin(_volUpLED.port, _volUpLED.pin))
-	{
-		_dwnSwState = RELEASED;
-		HAL_GPIO_WritePin(_volUpLED.port, _volUpLED.pin, GPIO_PIN_RESET);
-	}
-	if(RELEASED != _up_SW->getPressDuration() && _upSwState == RELEASED)
-	{
-		if(level < 10 )
-		{	this->setAttenuationDB((MAX_ATTENUATION/10)*(++level));	}
-		HAL_GPIO_WritePin(_volUpLED.port, _volUpLED.pin, GPIO_PIN_SET);
-		_upSwState = SHORT_PRESS;
-	}
-	if(RELEASED != _dwn_SW->getPressDuration() && _dwnSwState == RELEASED)
+	if((GPIO_PIN_RESET != _up_SW->getButtonState()) && (_upSwState == GPIO_PIN_RESET))
 	{
 		if(level > 0 )
 		{	this->setAttenuationDB((MAX_ATTENUATION/10)*(--level));	}
-		HAL_GPIO_WritePin(_volUpLED.port, _volUpLED.pin, GPIO_PIN_SET);
-		_dwnSwState = SHORT_PRESS;
+//		HAL_GPIO_WritePin(_volUpLED.port, _volUpLED.pin, GPIO_PIN_SET);
+		_upSwState = GPIO_PIN_SET;
 	}
+    else
+    {
+		_upSwState = GPIO_PIN_RESET;
+    }
+
+	if((GPIO_PIN_RESET != _dwn_SW->getButtonState()) && (_dwnSwState == GPIO_PIN_RESET))
+	{
+		if(level < 10 )
+		{	this->setAttenuationDB((MAX_ATTENUATION/10)*(++level));	}
+//		HAL_GPIO_WritePin(_volUpLED.port, _volUpLED.pin, GPIO_PIN_SET);
+		_dwnSwState = GPIO_PIN_SET;
+	}
+    else
+    {
+		_dwnSwState = GPIO_PIN_RESET;
+    }
 }
 
 void LM1972::setAttenuationDB(uint8_t decibel)
@@ -130,8 +130,9 @@ void LM1972::set(LM1972::ADDRESS addr, uint8_t data)
 //    }
 
     uint8_t packet = addr;
-    HAL_SPI_Transmit(_spi, &packet, sizeof(packet), 5);
-    HAL_SPI_Transmit(_spi, &data, sizeof(data), 5);
+    while(HAL_SPI_Transmit(_spi, &packet, sizeof(packet), 5) != HAL_OK)
+
+    while(HAL_SPI_Transmit(_spi, &data, sizeof(data), 5) != HAL_OK);
 
     //m_din.write((uint8_t) addr, m_clk);
     //m_din.write((uint8_t) data, m_clk);

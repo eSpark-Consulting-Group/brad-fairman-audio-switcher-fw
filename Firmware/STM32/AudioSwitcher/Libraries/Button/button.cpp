@@ -3,7 +3,7 @@
 
 void Button::update()
 {
-    bool reading = HAL_GPIO_ReadPin(_pin.port, _pin.pin);
+    GPIO_PinState reading = HAL_GPIO_ReadPin(_pin.port, _pin.pin);
         
     if (reading != _last_button_state)
     {
@@ -16,42 +16,25 @@ void Button::update()
         {
             _state = reading;
 
-            if (_state == RESET)
+            if (_state == GPIO_PIN_SET)
             {
                 _button_press_time = HAL_GetTick();
+                HAL_GPIO_WritePin(_led_pin.port, _led_pin.pin, GPIO_PIN_RESET);
             }
             else
             {
-                unsigned long pressDurationTime = HAL_GetTick() - _button_press_time;
-                if (pressDurationTime < SHORT_PRESS_TIME) {
-                    _press_duration = SHORT_PRESS;
-                } else {
-                    _press_duration = RELEASED;
-                }
+                HAL_GPIO_WritePin(_led_pin.port, _led_pin.pin, GPIO_PIN_SET);
             }
-        }
-    }
-
-    if (_state == RESET)
-    {
-        unsigned long currentDuration = HAL_GetTick() - _button_press_time;
-        if (currentDuration >= EXTRA_LONG_PRESS_TIME)
-        {
-            _press_duration = EXTRA_LONG_PRESS;
-        } else if (currentDuration >= LONG_PRESS_TIME)
-        {
-            _press_duration = LONG_PRESS;
         }
     }
 
     _last_button_state = reading;
 }
 
-BUTTON_STATE_e Button::getPressDuration()
+GPIO_PinState Button::getButtonState()
 {
-    if (_state == SET)
-    {
-        return _press_duration; // Return last detected press duration when released
-    }
-    return RELEASED; // If still pressed, return RELEASED state
+	if(_state == GPIO_PIN_RESET)
+		return GPIO_PIN_SET;
+	else if(_state == GPIO_PIN_SET)
+		return GPIO_PIN_RESET;
 }

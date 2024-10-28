@@ -17,7 +17,7 @@ class Output// : public Interface
 	public:
 		Output(MAX14661* max, GPIO_Pin_t led, uint8_t a, uint8_t b)
 		:	_router(max), _indication_LED(led), _maskA_pos(a), _maskB_pos(b)
-			{	}
+		{	HAL_GPIO_WritePin(_indication_LED.port, _indication_LED.pin, GPIO_PIN_RESET);}
 		void start(void)// override
 		{
 			_router->setChannelA(_maskA_pos);
@@ -48,5 +48,5 @@ class OutputControl
 		Button* _sw;
 		Output* _output;
 		uint64_t _on_time;
-		bool _state;
+		GPIO_PinState _state;
 };

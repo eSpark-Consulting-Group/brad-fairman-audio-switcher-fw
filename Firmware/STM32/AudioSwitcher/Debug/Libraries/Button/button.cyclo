@@ -1,2 +1,2 @@
-../Libraries/Button/button.cpp:4:6:void Button::update()	9
-../Libraries/Button/button.cpp:50:16:BUTTON_STATE_e Button::getPressDuration()	2
+../Libraries/Button/button.cpp:4:6:void Button::update()	5
+../Libraries/Button/button.cpp:34:15:GPIO_PinState Button::getButtonState()	3

@@ -54,7 +54,7 @@ typedef enum
 /* USER CODE BEGIN EC */
 #define DEBOUNCE_TIME_MS	50
 #define NUM_OF_OUTPUTS		5
-#define STATUS_LED_TOGGLE_PERIOD	500			// toggle LED every 500ms
+#define STATUS_LED_TOGGLE_PERIOD	100			// toggle LED every 100ms
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/

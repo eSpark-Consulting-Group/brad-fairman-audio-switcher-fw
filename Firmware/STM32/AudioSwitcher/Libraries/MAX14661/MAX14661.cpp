@@ -138,6 +138,16 @@ void MAX14661::setChannels(uint16_t mask)
   writeRegister(MAX14661_DIR3, (mask & 0xFF00) >> 8);
 }
 
+void MAX14661::setAllOutputs(void)
+{
+	uint16_t maskA = 0x0992;
+	uint16_t maskB = 0x1249;
+  writeRegister(MAX14661_DIR0, maskA & 0x00FF);
+  writeRegister(MAX14661_DIR1, (maskA & 0xFF00) >> 8);
+  writeRegister(MAX14661_DIR2, maskB & 0x00FF);
+  writeRegister(MAX14661_DIR3, (maskB & 0xFF00) >> 8);
+}
+
 void MAX14661::setChannelA(uint8_t pos)
 {
   uint16_t channelState = getChannelsA();

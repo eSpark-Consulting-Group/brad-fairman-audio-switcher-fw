@@ -39,6 +39,7 @@ class MAX14661
 
 	  //  set channels with a bit mask
 	  void     setChannels(uint16_t mask);
+	  void     setAllOutputs(void);
 	  void     setChannelA(uint8_t pos);
 	  void     setChannelB(uint8_t pos);
 	  void     clearChannelA(uint8_t pos);

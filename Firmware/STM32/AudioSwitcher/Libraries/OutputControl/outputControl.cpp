@@ -6,17 +6,17 @@
 void OutputControl::process()
 {
 	_sw->update();
-	if((RELEASED != _sw->getPressDuration()) && (true != _state))
+	if((GPIO_PIN_RESET != _sw->getButtonState()) && (GPIO_PIN_SET != _state))
 	{
 		_output->start();
 		_on_time = HAL_GetTick();
-		_state = true;
+		_state = GPIO_PIN_SET;
 	}
 
-	if(((HAL_GetTick()-_on_time) > OUTPUT_ACTIVE_TIME) && (false != _state))
+	if(((HAL_GetTick()-_on_time) > OUTPUT_ACTIVE_TIME) && (GPIO_PIN_RESET != _state))
 	{
 		_output->stop();
-		_state = false;
+		_state = GPIO_PIN_RESET;
 	}
 }
 
