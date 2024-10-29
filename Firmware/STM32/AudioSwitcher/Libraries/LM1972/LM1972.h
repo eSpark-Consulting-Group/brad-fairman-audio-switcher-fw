@@ -31,10 +31,6 @@
  * @endcode
  **/
 
-//typedef struct {
-//    GPIO_TypeDef* port;  // Pointer to the GPIO port (e.g., GPIOA, GPIOB)
-//    uint16_t pin;        // GPIO pin number (e.g., GPIO_PIN_0, GPIO_PIN_1, etc.)
-//} GPIO_Pin_t;
 
 class LM1972 {
 
@@ -45,7 +41,8 @@ public:
     /// @param	clk Pin connected to LM1972 Clock signal
     /// @param	load Pin connected to LM1972 Load signal
     ///
-    LM1972(SPI_HandleTypeDef* spi, GPIO_Pin_t cs, Button* up, Button* dwn);
+//    LM1972(SPI_HandleTypeDef* spi, GPIO_Pin_t cs, Button* up, Button* dwn);
+    LM1972(GPIO_Pin_t din, GPIO_Pin_t sck, GPIO_Pin_t cs, Button* up, Button* dwn);
 
 //    void setup();
     void processButtons();
@@ -85,11 +82,11 @@ private:
     uint8_t m_attenuation = 0;
     uint8_t level = 0;
 
-    SPI_HandleTypeDef* _spi;
+//    SPI_HandleTypeDef* _spi;
     Button* _up_SW;
     Button* _dwn_SW;
 
-    GPIO_Pin_t _csPin;
+    GPIO_Pin_t _csPin, _din, _sck;
 
     GPIO_PinState _upSwState;
     GPIO_PinState _dwnSwState;

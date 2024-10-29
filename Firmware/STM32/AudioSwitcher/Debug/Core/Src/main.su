@@ -2,11 +2,10 @@ C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher/L
 C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher/Libraries/OutputControl/outputControl.hpp:18:3:Output::Output(MAX14661*, GPIO_Pin_t, uint8_t, uint8_t)	24	static
 C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher/Libraries/OutputControl/outputControl.hpp:28:8:void Output::stop()	16	static
 C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher/Libraries/OutputControl/outputControl.hpp:43:3:OutputControl::OutputControl(Button*, Output*)	24	static
-../Core/Src/main.cpp:103:5:int main()	104	static
-../Core/Src/main.cpp:199:6:void SystemClock_Config()	88	static
-../Core/Src/main.cpp:238:13:void MX_I2C2_Init()	8	static
-../Core/Src/main.cpp:286:13:void MX_SPI2_Init()	8	static
-../Core/Src/main.cpp:326:13:void MX_GPIO_Init()	56	static
-../Core/Src/main.cpp:405:6:void Error_Handler()	8	static,ignoring_inline_asm
-../Core/Src/main.cpp:414:1:void __static_initialization_and_destruction_0(int, int)	144	static
-../Core/Src/main.cpp:414:1:cpp)	8	static
+../Core/Src/main.cpp:100:5:int main()	136	static
+../Core/Src/main.cpp:196:6:void SystemClock_Config()	88	static
+../Core/Src/main.cpp:235:13:void MX_I2C2_Init()	8	static
+../Core/Src/main.cpp:283:13:void MX_GPIO_Init()	56	static
+../Core/Src/main.cpp:366:6:void Error_Handler()	8	static,ignoring_inline_asm
+../Core/Src/main.cpp:375:1:void __static_initialization_and_destruction_0(int, int)	144	static
+../Core/Src/main.cpp:375:1:cpp)	8	static

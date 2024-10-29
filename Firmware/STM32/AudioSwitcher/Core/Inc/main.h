@@ -108,12 +108,16 @@ void Error_Handler(void);
 #define VOLDWN_SW_GPIO_Port GPIOA
 #define SPI2_CS_Pin GPIO_PIN_0
 #define SPI2_CS_GPIO_Port GPIOD
+#define SPI2_SCK_Pin GPIO_PIN_1
+#define SPI2_SCK_GPIO_Port GPIOD
 #define REAR2_SEL_LED_Pin GPIO_PIN_3
 #define REAR2_SEL_LED_GPIO_Port GPIOB
 #define REAR_SEL_LED_Pin GPIO_PIN_4
 #define REAR_SEL_LED_GPIO_Port GPIOB
 #define CENTER_SEL_LED_Pin GPIO_PIN_5
 #define CENTER_SEL_LED_GPIO_Port GPIOB
+#define SPI2_MOSI_Pin GPIO_PIN_7
+#define SPI2_MOSI_GPIO_Port GPIOB
 #define SUB_SEL_LED_Pin GPIO_PIN_8
 #define SUB_SEL_LED_GPIO_Port GPIOB
 #define STATUS_Pin GPIO_PIN_9

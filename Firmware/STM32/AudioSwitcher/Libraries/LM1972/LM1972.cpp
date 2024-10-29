@@ -3,13 +3,13 @@
 
 #define MAX_ATTENUATION		78
 
-LM1972::LM1972(SPI_HandleTypeDef* spi, GPIO_Pin_t cs, Button* up, Button* dwn)
-: _spi(spi), _csPin(cs), _up_SW(up), _dwn_SW(dwn), level(0)
+LM1972::LM1972(GPIO_Pin_t din, GPIO_Pin_t sck, GPIO_Pin_t cs, Button* up, Button* dwn)
+//: _spi(spi), _csPin(cs), _up_SW(up), _dwn_SW(dwn), level(0)
+: _din(din), _sck(sck), _csPin(cs), _up_SW(up), _dwn_SW(dwn), level(0)
 {
-	// _up_SW = new Button(_volUpSW);
-	// _dwn_SW = new Button(_volDownSW);
-	// this->m_attenuation = level_10;
 	HAL_GPIO_WritePin(_csPin.port, _csPin.pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(_din.port, _din.pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(_sck.port, _sck.pin, GPIO_PIN_RESET);
 	this->setAttenuationDB(level);
 }
 
@@ -105,40 +105,31 @@ uint8_t LM1972::getAttenuationDB()
 void LM1972::set(LM1972::ADDRESS addr, uint8_t data)
 {
 	HAL_GPIO_WritePin(_csPin.port, _csPin.pin, GPIO_PIN_RESET);
-//    m_load.low();
 //    m_clk.off();
     HAL_Delay(1);
 
-//	// bit-banging
-//    for (uint8_t i = 0; i < 8; i++) {
-//        m_din << (addr & (1 << (7-i)));
-//        DELAY(1);
-//        m_clk.on();
-//        DELAY(1);
-//        m_clk.off();
-//    }
+    auto sendBits = [&](uint8_t value) {
+        for (uint8_t i = 0; i < 8; i++) {
+            GPIO_PinState bitValue = (value & (1 << (7 - i))) ? GPIO_PIN_SET : GPIO_PIN_RESET;
+
+            HAL_GPIO_WritePin(_din.port, _din.pin, bitValue);
+            HAL_Delay(1);
+            HAL_GPIO_WritePin(_sck.port, _sck.pin, GPIO_PIN_SET);
+            HAL_Delay(1);
+            HAL_GPIO_WritePin(_sck.port, _sck.pin, GPIO_PIN_RESET);
+        }
+    };
+
+    sendBits(addr);
+    sendBits(data);
+
+//    uint8_t packet = addr;
+//    while(HAL_SPI_Transmit(_spi, &packet, sizeof(packet), 5) != HAL_OK)
 //
-//	// bit-banging
-//    for (uint8_t i = 0; i < 8; i++) {
-//        m_din << (data & (1 << (7-i)));
-//        DELAY(1);
-//        m_clk.on();
-//        DELAY(1);
-//        m_clk.off();
-//    }
-
-    uint8_t packet = addr;
-    while(HAL_SPI_Transmit(_spi, &packet, sizeof(packet), 5) != HAL_OK)
-
-    while(HAL_SPI_Transmit(_spi, &data, sizeof(data), 5) != HAL_OK);
-
-    //m_din.write((uint8_t) addr, m_clk);
-    //m_din.write((uint8_t) data, m_clk);
+//    while(HAL_SPI_Transmit(_spi, &data, sizeof(data), 5) != HAL_OK);
 
     HAL_Delay(1);
-//    m_load.high();
-//    m_clk.off();
-//    m_din.off();
-	HAL_GPIO_WritePin(_csPin.port, _csPin.pin, GPIO_PIN_SET);
 
+	HAL_GPIO_WritePin(_csPin.port, _csPin.pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(_din.port, _din.pin, GPIO_PIN_RESET);
 }
