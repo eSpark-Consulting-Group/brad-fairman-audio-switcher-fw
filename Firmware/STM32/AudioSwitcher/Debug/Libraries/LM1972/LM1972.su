@@ -1,7 +1,7 @@
 ../Libraries/LM1972/LM1972.cpp:6:1:LM1972::LM1972(SPI_HandleTypeDef*, GPIO_Pin_t, Button*, Button*)	24	static
 ../Libraries/LM1972/LM1972.cpp:16:6:void LM1972::processButtons()	16	static
-../Libraries/LM1972/LM1972.cpp:46:6:void LM1972::setAttenuationDB(uint8_t)	24	static
-../Libraries/LM1972/LM1972.cpp:68:6:void LM1972::setAttenuation(uint8_t)	16	static
-../Libraries/LM1972/LM1972.cpp:76:9:uint8_t LM1972::getAttenuation()	16	static
-../Libraries/LM1972/LM1972.cpp:81:9:uint8_t LM1972::getAttenuationDB()	32	static
-../Libraries/LM1972/LM1972.cpp:107:6:void LM1972::set(ADDRESS, uint8_t)	24	static
+../Libraries/LM1972/LM1972.cpp:44:6:void LM1972::setAttenuationDB(uint8_t)	24	static
+../Libraries/LM1972/LM1972.cpp:66:6:void LM1972::setAttenuation(uint8_t)	16	static
+../Libraries/LM1972/LM1972.cpp:74:9:uint8_t LM1972::getAttenuation()	16	static
+../Libraries/LM1972/LM1972.cpp:79:9:uint8_t LM1972::getAttenuationDB()	32	static
+../Libraries/LM1972/LM1972.cpp:105:6:void LM1972::set(ADDRESS, uint8_t)	24	static

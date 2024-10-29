@@ -1,4 +1,4 @@
-../Libraries/OutputControl/outputControl.hpp:21:8:void Output::start()	1
-../Libraries/OutputControl/outputControl.hpp:27:8:void Output::stop()	1
+../Libraries/OutputControl/outputControl.hpp:22:8:void Output::start()	1
+../Libraries/OutputControl/outputControl.hpp:28:8:void Output::stop()	1
 ../Libraries/OutputControl/outputControl.cpp:6:6:void OutputControl::process()	9
 ../Libraries/OutputControl/outputControl.cpp:23:6:bool OutputControl::getState()	1

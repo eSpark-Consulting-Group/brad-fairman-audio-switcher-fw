@@ -54,7 +54,7 @@ typedef enum
 /* USER CODE BEGIN EC */
 #define DEBOUNCE_TIME_MS	50
 #define NUM_OF_OUTPUTS		5
-#define STATUS_LED_TOGGLE_PERIOD	100			// toggle LED every 100ms
+#define STATUS_LED_TOGGLE_PERIOD	50			// toggle LED every 100ms
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/
@@ -80,27 +80,22 @@ void Error_Handler(void);
 #define OUT2_LED_GPIO_Port GPIOA
 #define OUT2_SW_Pin GPIO_PIN_4
 #define OUT2_SW_GPIO_Port GPIOA
-#define OUT2_SW_EXTI_IRQn EXTI4_15_IRQn
 #define OUT3_LED_Pin GPIO_PIN_5
 #define OUT3_LED_GPIO_Port GPIOA
 #define OUT3_SW_Pin GPIO_PIN_6
 #define OUT3_SW_GPIO_Port GPIOA
-#define OUT3_SW_EXTI_IRQn EXTI4_15_IRQn
 #define OUT4_LED_Pin GPIO_PIN_7
 #define OUT4_LED_GPIO_Port GPIOA
 #define OUT4_SW_Pin GPIO_PIN_0
 #define OUT4_SW_GPIO_Port GPIOB
-#define OUT4_SW_EXTI_IRQn EXTI0_1_IRQn
 #define OUT5_LED_Pin GPIO_PIN_1
 #define OUT5_LED_GPIO_Port GPIOB
 #define OUT5_SW_Pin GPIO_PIN_2
 #define OUT5_SW_GPIO_Port GPIOB
-#define OUT5_SW_EXTI_IRQn EXTI2_3_IRQn
 #define OUT6_LED_Pin GPIO_PIN_10
 #define OUT6_LED_GPIO_Port GPIOB
 #define OUT6_SW_Pin GPIO_PIN_11
 #define OUT6_SW_GPIO_Port GPIOB
-#define OUT6_SW_EXTI_IRQn EXTI4_15_IRQn
 #define VOLUP_LED_Pin GPIO_PIN_12
 #define VOLUP_LED_GPIO_Port GPIOB
 #define FRONT_SEL_LED_Pin GPIO_PIN_15

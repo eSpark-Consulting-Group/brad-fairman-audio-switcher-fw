@@ -22,7 +22,6 @@ void LM1972::processButtons()
 	{
 		if(level > 0 )
 		{	this->setAttenuationDB((MAX_ATTENUATION/10)*(--level));	}
-//		HAL_GPIO_WritePin(_volUpLED.port, _volUpLED.pin, GPIO_PIN_SET);
 		_upSwState = GPIO_PIN_SET;
 	}
     else
@@ -34,7 +33,6 @@ void LM1972::processButtons()
 	{
 		if(level < 10 )
 		{	this->setAttenuationDB((MAX_ATTENUATION/10)*(++level));	}
-//		HAL_GPIO_WritePin(_volUpLED.port, _volUpLED.pin, GPIO_PIN_SET);
 		_dwnSwState = GPIO_PIN_SET;
 	}
     else
