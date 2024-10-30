@@ -52,13 +52,8 @@ MAX14661*	outputMUX;
 
 Button	volUP_SW({VOLUP_SW_GPIO_Port, VOLUP_SW_Pin}, {VOLUP_LED_GPIO_Port, VOLUP_LED_Pin});
 Button	volDWN_SW({VOLDWN_SW_GPIO_Port, VOLDWN_SW_Pin}, {VOLDWN_LED_GPIO_Port, VOLDWN_LED_Pin});
-Button	output1_SW({OUT1_SW_GPIO_Port, OUT1_SW_Pin}, {OUT1_LED_GPIO_Port, OUT1_LED_Pin});		// Towers
-Button	output2_SW({OUT2_SW_GPIO_Port, OUT2_SW_Pin}, {OUT2_LED_GPIO_Port, OUT2_LED_Pin});		// BookShelfs
-Button	output3_SW({OUT3_SW_GPIO_Port, OUT3_SW_Pin}, {OUT3_LED_GPIO_Port, OUT3_LED_Pin});		// Center Channel Bookshelves and heights
-Button	output4_SW({OUT4_SW_GPIO_Port, OUT4_SW_Pin}, {OUT4_LED_GPIO_Port, OUT4_LED_Pin});		// Add Subwoofer
-Button	output5_SW({OUT5_SW_GPIO_Port, OUT5_SW_Pin}, {OUT5_LED_GPIO_Port, OUT5_LED_Pin});		// Everything
-//Button	output6({OUT6_SW_GPIO_Port, OUT6_SW_Pin}, {OUT6_LED_GPIO_Port, OUT6_LED_Pin});
-
+Button* output_SW[NUM_OF_OUTPUTS];
+// Button	output6_SW({OUT6_SW_GPIO_Port, OUT6_SW_Pin}, {OUT6_LED_GPIO_Port, OUT6_LED_Pin});
 
 Output* outputs[NUM_OF_OUTPUTS];//(outputMUX, {});
 //Output* front;//(outputMUX, {});
@@ -128,20 +123,22 @@ int main(void)
   volumeController = new LM1972({SPI2_MOSI_GPIO_Port,SPI2_MOSI_Pin}, {SPI2_SCK_GPIO_Port,SPI2_SCK_Pin}, {SPI2_CS_GPIO_Port, SPI2_CS_Pin}, &volUP_SW, &volDWN_SW);
   outputMUX = new MAX14661(&hi2c2, MAX14661_ADDRESS);
 
-  outputs[0] = new Output(outputMUX, {FRONT_SEL_LED_GPIO_Port, 	FRONT_SEL_LED_Pin}, 	1, 0);
-  outputs[1] = new Output(outputMUX, {REAR_SEL_LED_GPIO_Port, 	REAR_SEL_LED_Pin}, 		4, 3);
+  output_SW[0] = new Button({OUT1_SW_GPIO_Port, OUT1_SW_Pin}, {OUT1_LED_GPIO_Port, OUT1_LED_Pin});		// Towers
+  output_SW[1] = new Button({OUT2_SW_GPIO_Port, OUT2_SW_Pin}, {OUT2_LED_GPIO_Port, OUT2_LED_Pin});		// BookShelfs
+  output_SW[2] = new Button({OUT3_SW_GPIO_Port, OUT3_SW_Pin}, {OUT3_LED_GPIO_Port, OUT3_LED_Pin});		// Center Channel Bookshelves and heights
+  output_SW[3] = new Button({OUT4_SW_GPIO_Port, OUT4_SW_Pin}, {OUT4_LED_GPIO_Port, OUT4_LED_Pin});		// Add Subwoofer
+  output_SW[4] = new Button({OUT5_SW_GPIO_Port, OUT5_SW_Pin}, {OUT5_LED_GPIO_Port, OUT5_LED_Pin});		// Everything
+
+
+  outputs[0] = new Output(outputMUX, {SUB_SEL_LED_GPIO_Port, 	  SUB_SEL_LED_Pin}, 		8, 9);
+  outputs[1] = new Output(outputMUX, {CENTER_SEL_LED_GPIO_Port, CENTER_SEL_LED_Pin}, 	11, 12);
   outputs[2] = new Output(outputMUX, {REAR2_SEL_LED_GPIO_Port, 	REAR2_SEL_LED_Pin}, 	7, 6);
-  outputs[3] = new Output(outputMUX, {SUB_SEL_LED_GPIO_Port, 	SUB_SEL_LED_Pin}, 		8, 9);
-  outputs[4] = new Output(outputMUX, {CENTER_SEL_LED_GPIO_Port, CENTER_SEL_LED_Pin}, 	11, 12);
+  outputs[3] = new Output(outputMUX, {REAR_SEL_LED_GPIO_Port, 	REAR_SEL_LED_Pin}, 		4, 3);
+  outputs[4] = new Output(outputMUX, {FRONT_SEL_LED_GPIO_Port, 	FRONT_SEL_LED_Pin}, 	1, 0);
 
   for(int i=0; i<NUM_OF_OUTPUTS; i++)
   {
-	  outputControl[i] = new OutputControl(&output1_SW, outputs[i]);
-//	  outputControl[0] = new OutputControl(&output1_SW, outputs[0]);
-//	  outputControl[1] = new OutputControl(&output2_SW, outputs[1]);
-//	  outputControl[2] = new OutputControl(&output3_SW, outputs[2]);
-//	  outputControl[3] = new OutputControl(&output4_SW, outputs[3]);
-//	  outputControl[4] = new OutputControl(&output5_SW, outputs[4]);
+	  outputControl[i] = new OutputControl(output_SW[i], outputs[i]);
   }
 
   /* USER CODE END 2 */

@@ -1,0 +1,10 @@
+C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher - RelayBasedBoard/Libraries/Button/button.hpp:14:9:Button::Button(GPIO_Pin_t, GPIO_Pin_t)	32	static
+C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher - RelayBasedBoard/Libraries/OutputControl/outputControl.hpp:9:3:Output::Output(GPIO_Pin_t, GPIO_Pin_t)	32	static
+C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher - RelayBasedBoard/Libraries/OutputControl/outputControl.hpp:18:8:void Output::stop()	16	static
+C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher - RelayBasedBoard/Libraries/OutputControl/outputControl.hpp:31:3:OutputControl::OutputControl(Button*, Output*)	24	static
+../Core/Src/main.cpp:74:5:int main()	208	static
+../Core/Src/main.cpp:162:6:void SystemClock_Config()	88	static
+../Core/Src/main.cpp:201:13:void MX_GPIO_Init()	56	static
+../Core/Src/main.cpp:289:6:void Error_Handler()	8	static,ignoring_inline_asm
+../Core/Src/main.cpp:298:1:void __static_initialization_and_destruction_0(int, int)	64	static
+../Core/Src/main.cpp:298:1:cpp)	8	static
