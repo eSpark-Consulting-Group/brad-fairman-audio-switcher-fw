@@ -13,3 +13,6 @@ The product is going to have an audio player constantly looping audio to the inp
 6. Volume Down
 7. Volume Up
 8. TBD
+
+### Mapping Information
+![image](https://github.com/user-attachments/assets/c83f34e2-5d85-474d-bbfc-afbb562ae76e)
