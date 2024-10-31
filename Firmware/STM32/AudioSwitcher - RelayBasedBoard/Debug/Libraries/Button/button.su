@@ -1,2 +1,7 @@
-../Libraries/Button/button.cpp:4:6:void Button::update()	40	static
-../Libraries/Button/button.cpp:34:15:GPIO_PinState Button::getButtonState()	16	static
+../Libraries/Button/button.hpp:36:14:virtual void Button::start()	16	static
+../Libraries/Button/button.hpp:39:14:virtual void Button::stop()	16	static
+../Libraries/Button/button.cpp:5:6:void Button::update()	48	static
+../Libraries/Button/button.cpp:42:15:GPIO_PinState Button::getButtonState()	16	static
+../Libraries/Button/button.cpp:54:6:virtual bool Button::isActive()	16	static
+../Libraries/Button/button.cpp:59:6:void Button::setState(bool)	16	static
+../Libraries/Button/button.cpp:64:6:bool Button::getType()	16	static

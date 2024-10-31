@@ -43,13 +43,13 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-Button	volUP_SW({VOLUP_SW_GPIO_Port, VOLUP_SW_Pin}, 	{VOLUP_LED_GPIO_Port, VOLUP_LED_Pin});
-Button	volDWN_SW({VOLDWN_SW_GPIO_Port, VOLDWN_SW_Pin}, {VOLDWN_LED_GPIO_Port, VOLDWN_LED_Pin});
-Button* outputSW[NUM_OF_OUTPUTS];
+Button	volUP_SW({VOLUP_SW_GPIO_Port, VOLUP_SW_Pin}, 	{VOLUP_LED_GPIO_Port, VOLUP_LED_Pin}, false);
+Button	volDWN_SW({VOLDWN_SW_GPIO_Port, VOLDWN_SW_Pin}, {VOLDWN_LED_GPIO_Port, VOLDWN_LED_Pin}, false);
+Button* outputSW[NUM_OF_SWITCHES];
 
 Output* outputs[NUM_OF_OUTPUTS];
 
-OutputControl* outputControl[NUM_OF_OUTPUTS];
+OutputControl* outputControl;
 
 uint8_t	outputStateFlag = 0;
 uint64_t timeStamp = 0;
@@ -64,7 +64,7 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+OUTPUT_MODE_e currentMode;
 /* USER CODE END 0 */
 
 /**
@@ -97,22 +97,23 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-  outputSW[0] = new Button({OUT1_SW_GPIO_Port, OUT1_SW_Pin}, {OUT1_LED_GPIO_Port, OUT1_LED_Pin});		// Towers
-  outputSW[1] = new Button({OUT2_SW_GPIO_Port, OUT2_SW_Pin}, {OUT2_LED_GPIO_Port, OUT2_LED_Pin});		// BookShelfs
-  outputSW[2] = new Button({OUT3_SW_GPIO_Port, OUT3_SW_Pin}, {OUT3_LED_GPIO_Port, OUT3_LED_Pin});		// Center Channel Bookshelves and heights
-  outputSW[3] = new Button({OUT4_SW_GPIO_Port, OUT4_SW_Pin}, {OUT4_LED_GPIO_Port, OUT4_LED_Pin});		// Add Subwoofer
-  outputSW[4] = new Button({OUT5_SW_GPIO_Port, OUT5_SW_Pin}, {OUT5_LED_GPIO_Port, OUT5_LED_Pin});		// Everything
+  outputSW[0] = new Button({OUT1_SW_GPIO_Port, OUT1_SW_Pin}, {OUT1_LED_GPIO_Port, OUT1_LED_Pin});			// Front
+  outputSW[1] = new Button({OUT2_SW_GPIO_Port, OUT2_SW_Pin}, {OUT2_LED_GPIO_Port, OUT2_LED_Pin});			// Rear1
+  outputSW[2] = new Button({OUT3_SW_GPIO_Port, OUT3_SW_Pin}, {OUT3_LED_GPIO_Port, OUT3_LED_Pin});			// Center, Rear1, Rear2
+  outputSW[3] = new Button({OUT4_SW_GPIO_Port, OUT4_SW_Pin}, {OUT4_LED_GPIO_Port, OUT4_LED_Pin}, false);	// Add Subwoofer to current selection
+  outputSW[4] = new Button({OUT5_SW_GPIO_Port, OUT5_SW_Pin}, {OUT5_LED_GPIO_Port, OUT5_LED_Pin});			// All outputs active
+//  outputSW[5] = new Button({OUT6_SW_GPIO_Port, OUT6_SW_Pin}, {OUT6_LED_GPIO_Port, OUT6_LED_Pin});			// TBD
 
   outputs[0] = new Output({SUB_RELAY_GPIO_Port, 	SUB_RELAY_Pin}, 	{SUB_SEL_LED_GPIO_Port, 	SUB_SEL_LED_Pin});
   outputs[1] = new Output({CENTER_RELAY_GPIO_Port, 	CENTER_RELAY_Pin}, 	{CENTER_SEL_LED_GPIO_Port, 	CENTER_SEL_LED_Pin});
   outputs[2] = new Output({REAR2_RELAY_GPIO_Port, 	REAR2_RELAY_Pin}, 	{REAR2_SEL_LED_GPIO_Port, 	REAR2_SEL_LED_Pin});
-  outputs[3] = new Output({REAR_RELAY_GPIO_Port, 	REAR_RELAY_Pin}, 	{REAR_SEL_LED_GPIO_Port, 	REAR_SEL_LED_Pin});
+  outputs[3] = new Output({REAR1_RELAY_GPIO_Port, 	REAR1_RELAY_Pin}, 	{REAR1_SEL_LED_GPIO_Port, 	REAR1_SEL_LED_Pin});
   outputs[4] = new Output({FRONT_RELAY_GPIO_Port, 	FRONT_RELAY_Pin}, 	{FRONT_SEL_LED_GPIO_Port, 	FRONT_SEL_LED_Pin});
 
-  for(int i=0; i<NUM_OF_OUTPUTS; i++)
-  {
-	  outputControl[i] = new OutputControl(outputSW[i], outputs[i]);
-  }
+//  for(int i=0; i<NUM_OF_OUTPUTS; i++)
+//	  activeOutputs.output[i] = NULL;
+
+  outputControl = new OutputControl(&currentMode);
 
   /* USER CODE END 2 */
 
@@ -123,34 +124,92 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  volUP_SW.update();
-	  volDWN_SW.update();
 
-	  for(int i=0; i<NUM_OF_OUTPUTS; i++)
+//	  volUP_SW.update();
+//	  volDWN_SW.update();
+
+	  for(int i=0; i < NUM_OF_SWITCHES; i++)
 	  {
-		  outputControl[i]->process();
-		  if(outputControl[i]->getState())
+		  outputSW[i]->update();
+		  if(outputSW[i]->getButtonState())
 		  {
-			  outputStateFlag |= (1<<i);
-		  }
-		  else
-		  {
-			  outputStateFlag &= ~(1<<i);
+			  OUTPUT_MODE_e mode = (OUTPUT_MODE_e)outputControl->getMode(i);
+			  if(mode != currentMode)
+			  {
+				  switch(i)
+				  {
+					  case OUT1_SW:
+						  outputControl->removeAllOutputs();
+						  outputControl->addOutput(outputSW[OUT1_SW]);
+						  outputControl->addOutput(outputs[4]);
+//						  outputControl->activate();
+						  currentMode = FRONT_MODE;
+						  break;
+					  case OUT2_SW:
+						  outputControl->removeAllOutputs();
+						  outputControl->addOutput(outputSW[OUT2_SW]);
+						  outputControl->addOutput(outputs[3]);
+//						  outputControl->activate();
+						  currentMode = REAR1_MODE;
+						  break;
+					  case OUT3_SW:
+						  outputControl->removeAllOutputs();
+						  outputControl->addOutput(outputSW[OUT3_SW]);
+						  outputControl->addOutput(outputs[1]);
+						  outputControl->addOutput(outputs[2]);
+						  outputControl->addOutput(outputs[3]);
+//						  outputControl->activate();
+						  currentMode = CEN_REAR1_2_MODE;
+						  break;
+					  case OUT4_SW:
+						  if(currentMode < SUBWOOFER_MODE)
+						  {
+							  int lMode = (int)currentMode + (int)SUBWOOFER_MODE+1;
+							  currentMode = (OUTPUT_MODE_e)lMode;
+							  outputControl->addOutput(outputs[0]);
+//							  outputControl->activate();
+						  }
+						  break;
+					  case OUT5_SW:
+						  outputControl->removeAllOutputs();
+						  outputControl->addOutput(outputSW[OUT5_SW]);
+						  outputControl->addOutput(outputs[0]);
+						  outputControl->addOutput(outputs[1]);
+						  outputControl->addOutput(outputs[2]);
+						  outputControl->addOutput(outputs[3]);
+						  outputControl->addOutput(outputs[4]);
+//						  outputControl->activate();
+						  currentMode = ALL_ACTIVE_MODE;
+						  break;
+//					  case OUT6_SW:
+//						  break;
+				  }
+				  outputControl->activate();
+			  }
+			  else
+			  {
+				  outputControl->removeAllOutputs();
+				  currentMode = ALL_OFF_MODE;
+			  }
 		  }
 	  }
 
-	  if(outputStateFlag)
-	  {
-		  if((HAL_GetTick() - timeStamp) > STATUS_LED_TOGGLE_PERIOD)
-		  {
-			  timeStamp = HAL_GetTick();
-			  HAL_GPIO_TogglePin(STATUS_GPIO_Port, STATUS_Pin);
-		  }
-	  }
-	  else
-	  {
-		  HAL_GPIO_WritePin(STATUS_GPIO_Port, STATUS_Pin, GPIO_PIN_SET);
-	  }
+	  outputControl->process();
+
+
+//	  if(outputStateFlag)
+//	  {
+//		  if((HAL_GetTick() - timeStamp) > STATUS_LED_TOGGLE_PERIOD)
+//		  {
+//			  timeStamp = HAL_GetTick();
+//			  HAL_GPIO_TogglePin(STATUS_GPIO_Port, STATUS_Pin);
+//		  }
+//	  }
+//	  else
+//	  {
+//		  HAL_GPIO_WritePin(STATUS_GPIO_Port, STATUS_Pin, GPIO_PIN_SET);
+//	  }
+
   }
   /* USER CODE END 3 */
 }
@@ -216,8 +275,8 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, OUT5_LED_Pin|OUT6_LED_Pin|VOLUP_LED_Pin|SUB_RELAY_Pin
-                          |CENTER_RELAY_Pin|FRONT_SEL_LED_Pin|REAR2_SEL_LED_Pin|REAR_SEL_LED_Pin
-                          |CENTER_SEL_LED_Pin|REAR2_RELAY_Pin|REAR_RELAY_Pin|SUB_SEL_LED_Pin, GPIO_PIN_RESET);
+                          |CENTER_RELAY_Pin|FRONT_SEL_LED_Pin|REAR1_SEL_LED_Pin|REAR2_SEL_LED_Pin
+                          |CENTER_SEL_LED_Pin|REAR2_RELAY_Pin|REAR1_RELAY_Pin|SUB_SEL_LED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, GPIO_OUT1_Pin|GPIO_OUT_2_Pin, GPIO_PIN_RESET);
@@ -249,12 +308,12 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pins : OUT5_LED_Pin OUT6_LED_Pin VOLUP_LED_Pin SUB_RELAY_Pin
-                           CENTER_RELAY_Pin FRONT_SEL_LED_Pin REAR2_SEL_LED_Pin REAR_SEL_LED_Pin
-                           CENTER_SEL_LED_Pin REAR2_RELAY_Pin REAR_RELAY_Pin SUB_SEL_LED_Pin
+                           CENTER_RELAY_Pin FRONT_SEL_LED_Pin REAR1_SEL_LED_Pin REAR2_SEL_LED_Pin
+                           CENTER_SEL_LED_Pin REAR2_RELAY_Pin REAR1_RELAY_Pin SUB_SEL_LED_Pin
                            STATUS_Pin */
   GPIO_InitStruct.Pin = OUT5_LED_Pin|OUT6_LED_Pin|VOLUP_LED_Pin|SUB_RELAY_Pin
-                          |CENTER_RELAY_Pin|FRONT_SEL_LED_Pin|REAR2_SEL_LED_Pin|REAR_SEL_LED_Pin
-                          |CENTER_SEL_LED_Pin|REAR2_RELAY_Pin|REAR_RELAY_Pin|SUB_SEL_LED_Pin
+                          |CENTER_RELAY_Pin|FRONT_SEL_LED_Pin|REAR1_SEL_LED_Pin|REAR2_SEL_LED_Pin
+                          |CENTER_SEL_LED_Pin|REAR2_RELAY_Pin|REAR1_RELAY_Pin|SUB_SEL_LED_Pin
                           |STATUS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;

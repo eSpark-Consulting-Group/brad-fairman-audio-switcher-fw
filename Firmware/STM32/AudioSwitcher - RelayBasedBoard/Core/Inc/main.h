@@ -46,7 +46,8 @@ typedef struct {
 /* USER CODE BEGIN EC */
 #define DEBOUNCE_TIME_MS	50
 #define NUM_OF_OUTPUTS		5
-#define STATUS_LED_TOGGLE_PERIOD	50			// toggle LED every 100ms
+#define NUM_OF_SWITCHES		5
+#define STATUS_LED_TOGGLE_PERIOD	50			// toggle LED every 50ms
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/
@@ -110,16 +111,16 @@ void Error_Handler(void);
 #define GPIO_OUT1_GPIO_Port GPIOD
 #define GPIO_OUT_2_Pin GPIO_PIN_3
 #define GPIO_OUT_2_GPIO_Port GPIOD
-#define REAR2_SEL_LED_Pin GPIO_PIN_3
+#define REAR1_SEL_LED_Pin GPIO_PIN_3
+#define REAR1_SEL_LED_GPIO_Port GPIOB
+#define REAR2_SEL_LED_Pin GPIO_PIN_4
 #define REAR2_SEL_LED_GPIO_Port GPIOB
-#define REAR_SEL_LED_Pin GPIO_PIN_4
-#define REAR_SEL_LED_GPIO_Port GPIOB
 #define CENTER_SEL_LED_Pin GPIO_PIN_5
 #define CENTER_SEL_LED_GPIO_Port GPIOB
 #define REAR2_RELAY_Pin GPIO_PIN_6
 #define REAR2_RELAY_GPIO_Port GPIOB
-#define REAR_RELAY_Pin GPIO_PIN_7
-#define REAR_RELAY_GPIO_Port GPIOB
+#define REAR1_RELAY_Pin GPIO_PIN_7
+#define REAR1_RELAY_GPIO_Port GPIOB
 #define SUB_SEL_LED_Pin GPIO_PIN_8
 #define SUB_SEL_LED_GPIO_Port GPIOB
 #define STATUS_Pin GPIO_PIN_9

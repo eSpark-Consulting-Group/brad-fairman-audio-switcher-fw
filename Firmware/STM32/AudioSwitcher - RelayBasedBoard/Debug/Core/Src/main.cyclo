@@ -1,10 +1,14 @@
-C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher - RelayBasedBoard/Libraries/Button/button.hpp:14:9:Button::Button(GPIO_Pin_t, GPIO_Pin_t)	1
-C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher - RelayBasedBoard/Libraries/OutputControl/outputControl.hpp:9:3:Output::Output(GPIO_Pin_t, GPIO_Pin_t)	1
-C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher - RelayBasedBoard/Libraries/OutputControl/outputControl.hpp:18:8:void Output::stop()	1
-C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher - RelayBasedBoard/Libraries/OutputControl/outputControl.hpp:31:3:OutputControl::OutputControl(Button*, Output*)	1
-../Core/Src/main.cpp:74:5:int main()	9
-../Core/Src/main.cpp:162:6:void SystemClock_Config()	3
-../Core/Src/main.cpp:201:13:void MX_GPIO_Init()	1
-../Core/Src/main.cpp:289:6:void Error_Handler()	1
-../Core/Src/main.cpp:298:1:void __static_initialization_and_destruction_0(int, int)	3
-../Core/Src/main.cpp:298:1:cpp)	1
+C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher - RelayBasedBoard/Libraries/Button/button.hpp:23:16:virtual bool Interface::isActive()	1
+C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher - RelayBasedBoard/Libraries/Button/button.hpp:18:7:constexpr Interface::Interface()	1
+C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher - RelayBasedBoard/Libraries/Button/button.hpp:29:9:Button::Button(GPIO_Pin_t, GPIO_Pin_t, bool)	1
+C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher - RelayBasedBoard/Libraries/OutputControl/outputControl.hpp:10:3:Output::Output(GPIO_Pin_t, GPIO_Pin_t)	1
+C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher - RelayBasedBoard/Libraries/OutputControl/outputControl.hpp:14:8:virtual void Output::start()	1
+C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher - RelayBasedBoard/Libraries/OutputControl/outputControl.hpp:20:8:virtual void Output::stop()	1
+C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher - RelayBasedBoard/Libraries/OutputControl/outputControl.hpp:26:8:virtual bool Output::isActive()	1
+C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher - RelayBasedBoard/Libraries/OutputControl/outputControl.hpp:68:3:OutputControl::OutputControl(OUTPUT_MODE_e*)	2
+../Core/Src/main.cpp:74:5:int main()	10
+../Core/Src/main.cpp:221:6:void SystemClock_Config()	3
+../Core/Src/main.cpp:260:13:void MX_GPIO_Init()	1
+../Core/Src/main.cpp:348:6:void Error_Handler()	1
+../Core/Src/main.cpp:357:1:void __static_initialization_and_destruction_0(int, int)	3
+../Core/Src/main.cpp:357:1:cpp)	1
