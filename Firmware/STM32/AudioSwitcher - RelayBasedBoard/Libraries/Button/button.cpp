@@ -16,7 +16,7 @@ void Button::update()
         if (reading != _state)
         {
             _state = reading;
-            if(GPIO_PIN_RESET == _state)
+            if(_state == GPIO_PIN_RESET)
             {
             	_trigger = GPIO_PIN_SET;
             	_triggerred = true;
@@ -41,7 +41,14 @@ void Button::update()
 
 GPIO_PinState Button::getButtonState()
 {
-	if((_triggerred) && (GPIO_PIN_SET == _trigger))
+//	if(_state == GPIO_PIN_RESET)
+//		static bool trigger = true;
+//		trigger
+//		return GPIO_PIN_SET;
+//	else if(_state == GPIO_PIN_SET)
+//		return GPIO_PIN_RESET;
+//	GPIO_PinState lTrigger = _trigger;
+	if(_triggerred && (_trigger == GPIO_PIN_SET))
 	{
 		_trigger = GPIO_PIN_RESET;
 		_triggerred = false;

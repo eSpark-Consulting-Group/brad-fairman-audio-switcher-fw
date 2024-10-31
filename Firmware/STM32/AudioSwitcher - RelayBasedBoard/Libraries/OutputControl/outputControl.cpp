@@ -1,7 +1,9 @@
 #include "outputControl.hpp"
 
-#define TO_MS(x)	(x*1000)
-#define OUTPUT_ACTIVE_TIME	TO_MS(30)
+#define SEC_TO_MS(x)	(x*1000)
+#define OUTPUT_ACTIVE_TIME	SEC_TO_MS(30)
+
+#define GPIO_OUT1_TOGGLE_TIME	250
 
 void OutputControl::activate()
 {
@@ -12,7 +14,9 @@ void OutputControl::activate()
 			_output.output[i]->start();
 		}
 	}
+	HAL_GPIO_WritePin(_gpio_out_1.port, _gpio_out_1.pin, GPIO_PIN_RESET);
 	_on_time = HAL_GetTick();
+	_gpio_out_1_time = HAL_GetTick();
 	_state = GPIO_PIN_SET;
 }
 
@@ -23,6 +27,10 @@ void OutputControl::process()
 		turnOffAllOutputs();
 		_state = GPIO_PIN_RESET;
 		*_mode = ALL_OFF_MODE;
+	}
+	if(((HAL_GetTick()-_gpio_out_1_time) > GPIO_OUT1_TOGGLE_TIME) && (GPIO_PIN_SET != HAL_GPIO_ReadPin(_gpio_out_1.port, _gpio_out_1.pin)))
+	{
+		HAL_GPIO_WritePin(_gpio_out_1.port, _gpio_out_1.pin, GPIO_PIN_SET);
 	}
 }
 
@@ -40,7 +48,7 @@ uint8_t OutputControl::getMode(uint8_t buttonNumber)
 	{
 		futureMode = 4 + currentMode;
 	}
-	else if((buttonNumber == OUT4_SW) && (currentMode < ALL_ACTIVE_MODE))
+	else if((buttonNumber == OUT4_SW) && (currentMode < ALL_OFF_MODE))
 	{
 		futureMode = NO_CHANGE;
 	}
@@ -57,7 +65,7 @@ uint8_t OutputControl::getMode(uint8_t buttonNumber)
 
 void OutputControl::addOutput(Interface* output)
 {
-  for(int i=0; i < NUM_OF_OUTPUTS+1; i++)
+  for(int i=0; i < (NUM_OF_OUTPUTS+1); i++)
   {
 	  if(_output.output[i] == output)
 	  {
@@ -70,7 +78,7 @@ void OutputControl::addOutput(Interface* output)
 
 void OutputControl::removeAllOutputs()
 {
-  for(int i=0; i < NUM_OF_OUTPUTS+1; i++)
+  for(int i=0; i < (NUM_OF_OUTPUTS+1); i++)
   {
 	  if(_output.output[i])
 	  {
@@ -83,7 +91,7 @@ void OutputControl::removeAllOutputs()
 
 void OutputControl::turnOffAllOutputs()
 {
-  for(int i=0; i < NUM_OF_OUTPUTS+1; i++)
+  for(int i=0; i < (NUM_OF_OUTPUTS+1); i++)
   {
 	  if(_output.output[i] && _output.output[i]->isActive())
 	  {

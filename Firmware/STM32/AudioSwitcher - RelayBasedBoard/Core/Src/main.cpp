@@ -100,7 +100,7 @@ int main(void)
   outputSW[0] = new Button({OUT1_SW_GPIO_Port, OUT1_SW_Pin}, {OUT1_LED_GPIO_Port, OUT1_LED_Pin});			// Front
   outputSW[1] = new Button({OUT2_SW_GPIO_Port, OUT2_SW_Pin}, {OUT2_LED_GPIO_Port, OUT2_LED_Pin});			// Rear1
   outputSW[2] = new Button({OUT3_SW_GPIO_Port, OUT3_SW_Pin}, {OUT3_LED_GPIO_Port, OUT3_LED_Pin});			// Center, Rear1, Rear2
-  outputSW[3] = new Button({OUT4_SW_GPIO_Port, OUT4_SW_Pin}, {OUT4_LED_GPIO_Port, OUT4_LED_Pin}, false);	// Add Subwoofer to current selection
+  outputSW[3] = new Button({OUT4_SW_GPIO_Port, OUT4_SW_Pin}, {OUT4_LED_GPIO_Port, OUT4_LED_Pin});//, false);	// Add/Remove Subwoofer to current selection
   outputSW[4] = new Button({OUT5_SW_GPIO_Port, OUT5_SW_Pin}, {OUT5_LED_GPIO_Port, OUT5_LED_Pin});			// All outputs active
 //  outputSW[5] = new Button({OUT6_SW_GPIO_Port, OUT6_SW_Pin}, {OUT6_LED_GPIO_Port, OUT6_LED_Pin});			// TBD
 
@@ -110,10 +110,7 @@ int main(void)
   outputs[3] = new Output({REAR1_RELAY_GPIO_Port, 	REAR1_RELAY_Pin}, 	{REAR1_SEL_LED_GPIO_Port, 	REAR1_SEL_LED_Pin});
   outputs[4] = new Output({FRONT_RELAY_GPIO_Port, 	FRONT_RELAY_Pin}, 	{FRONT_SEL_LED_GPIO_Port, 	FRONT_SEL_LED_Pin});
 
-//  for(int i=0; i<NUM_OF_OUTPUTS; i++)
-//	  activeOutputs.output[i] = NULL;
-
-  outputControl = new OutputControl(&currentMode);
+  outputControl = new OutputControl(&currentMode, {GPIO_OUT1_GPIO_Port, GPIO_OUT1_Pin});
 
   /* USER CODE END 2 */
 
@@ -142,14 +139,14 @@ int main(void)
 						  outputControl->removeAllOutputs();
 						  outputControl->addOutput(outputSW[OUT1_SW]);
 						  outputControl->addOutput(outputs[4]);
-//						  outputControl->activate();
+						  outputControl->activate();
 						  currentMode = FRONT_MODE;
 						  break;
 					  case OUT2_SW:
 						  outputControl->removeAllOutputs();
 						  outputControl->addOutput(outputSW[OUT2_SW]);
 						  outputControl->addOutput(outputs[3]);
-//						  outputControl->activate();
+						  outputControl->activate();
 						  currentMode = REAR1_MODE;
 						  break;
 					  case OUT3_SW:
@@ -158,7 +155,7 @@ int main(void)
 						  outputControl->addOutput(outputs[1]);
 						  outputControl->addOutput(outputs[2]);
 						  outputControl->addOutput(outputs[3]);
-//						  outputControl->activate();
+						  outputControl->activate();
 						  currentMode = CEN_REAR1_2_MODE;
 						  break;
 					  case OUT4_SW:
@@ -167,7 +164,7 @@ int main(void)
 							  int lMode = (int)currentMode + (int)SUBWOOFER_MODE+1;
 							  currentMode = (OUTPUT_MODE_e)lMode;
 							  outputControl->addOutput(outputs[0]);
-//							  outputControl->activate();
+							  outputControl->activate();
 						  }
 						  break;
 					  case OUT5_SW:
@@ -178,13 +175,13 @@ int main(void)
 						  outputControl->addOutput(outputs[2]);
 						  outputControl->addOutput(outputs[3]);
 						  outputControl->addOutput(outputs[4]);
-//						  outputControl->activate();
+						  outputControl->activate();
 						  currentMode = ALL_ACTIVE_MODE;
 						  break;
 //					  case OUT6_SW:
 //						  break;
 				  }
-				  outputControl->activate();
+//				  outputControl->activate();
 			  }
 			  else
 			  {

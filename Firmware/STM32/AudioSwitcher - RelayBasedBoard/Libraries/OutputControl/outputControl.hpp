@@ -65,9 +65,11 @@ typedef enum
 class OutputControl
 {
 	public:
-		OutputControl(OUTPUT_MODE_e* mode)
-		:_active_outputs(0), _on_time(0), _mode(mode),  _state(GPIO_PIN_RESET)
+		OutputControl(OUTPUT_MODE_e* mode, GPIO_Pin_t pin)
+		:_gpio_out_1(pin), _active_outputs(0), _on_time(0), _gpio_out_1_time(0),
+		 _mode(mode),  _state(GPIO_PIN_RESET)
 		{	*_mode = ALL_OFF_MODE;
+			HAL_GPIO_WritePin(_gpio_out_1.port, _gpio_out_1.pin, GPIO_PIN_SET);
 			for(int i=0; i<(NUM_OF_OUTPUTS+1); i++)
 			{
 				_output.output[i] = NULL;
@@ -84,8 +86,9 @@ class OutputControl
 	private:
 		void turnOffAllOutputs();
 
+		GPIO_Pin_t	_gpio_out_1;
 		uint8_t	_active_outputs;
-		uint64_t _on_time;
+		uint64_t _on_time, _gpio_out_1_time;
 		OUTPUT_MODE_e* _mode;
 
 		OUTPUTS_s _output;

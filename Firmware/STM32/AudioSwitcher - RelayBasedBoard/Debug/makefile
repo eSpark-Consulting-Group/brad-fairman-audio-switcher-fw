@@ -78,6 +78,12 @@ default.size.stdout \
 OBJDUMP_LIST += \
 AudioSwitcher\ -\ RelayBasedBoard.list \
 
+OBJCOPY_HEX += \
+AudioSwitcher\ -\ RelayBasedBoard.hex \
+
+OBJCOPY_BIN += \
+AudioSwitcher\ -\ RelayBasedBoard.bin \
+
 
 # All Target
 all: main-build
@@ -101,12 +107,22 @@ AudioSwitcher\ -\ RelayBasedBoard.list: $(EXECUTABLES) makefile objects.list $(O
 	@echo 'Finished building: $@'
 	@echo ' '
 
+AudioSwitcher\ -\ RelayBasedBoard.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "AudioSwitcher - RelayBasedBoard.hex"
+	@echo 'Finished building: $@'
+	@echo ' '
+
+AudioSwitcher\ -\ RelayBasedBoard.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "AudioSwitcher - RelayBasedBoard.bin"
+	@echo 'Finished building: $@'
+	@echo ' '
+
 # Other Targets
 clean:
-	-$(RM) AudioSwitcher\ -\ RelayBasedBoard.elf AudioSwitcher\ -\ RelayBasedBoard.list AudioSwitcher\ -\ RelayBasedBoard.map AudioSwitcher\\ -\\ RelayBasedBoard.elf default.size.stdout
+	-$(RM) AudioSwitcher\ -\ RelayBasedBoard.bin AudioSwitcher\ -\ RelayBasedBoard.elf AudioSwitcher\ -\ RelayBasedBoard.hex AudioSwitcher\ -\ RelayBasedBoard.list AudioSwitcher\ -\ RelayBasedBoard.map AudioSwitcher\\ -\\ RelayBasedBoard.elf default.size.stdout
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX) $(OBJCOPY_BIN)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'
