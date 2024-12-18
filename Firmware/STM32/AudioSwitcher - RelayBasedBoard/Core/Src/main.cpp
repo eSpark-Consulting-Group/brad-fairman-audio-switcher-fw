@@ -268,12 +268,12 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, OUT1_LED_Pin|OUT2_LED_Pin|OUT3_LED_Pin|OUT4_LED_Pin
-                          |VOLDWN_LED_Pin|FRONT_RELAY_Pin, GPIO_PIN_RESET);
+                          |VOLDWN_LED_Pin|SUB_RELAY_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, OUT5_LED_Pin|OUT6_LED_Pin|VOLUP_LED_Pin|SUB_RELAY_Pin
-                          |CENTER_RELAY_Pin|FRONT_SEL_LED_Pin|REAR1_SEL_LED_Pin|REAR2_SEL_LED_Pin
-                          |CENTER_SEL_LED_Pin|REAR2_RELAY_Pin|REAR1_RELAY_Pin|SUB_SEL_LED_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, OUT5_LED_Pin|OUT6_LED_Pin|VOLUP_LED_Pin|FRONT_RELAY_Pin
+                          |REAR1_RELAY_Pin|SUB_SEL_LED_Pin|REAR2_SEL_LED_Pin|CENTER_SEL_LED_Pin
+                          |REAR1_SEL_LED_Pin|CENTER_RELAY_Pin|REAR2_RELAY_Pin|FRONT_SEL_LED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, GPIO_OUT1_Pin|GPIO_OUT_2_Pin, GPIO_PIN_RESET);
@@ -282,9 +282,9 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(STATUS_GPIO_Port, STATUS_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pins : OUT1_LED_Pin OUT2_LED_Pin OUT3_LED_Pin OUT4_LED_Pin
-                           VOLDWN_LED_Pin FRONT_RELAY_Pin */
+                           VOLDWN_LED_Pin SUB_RELAY_Pin */
   GPIO_InitStruct.Pin = OUT1_LED_Pin|OUT2_LED_Pin|OUT3_LED_Pin|OUT4_LED_Pin
-                          |VOLDWN_LED_Pin|FRONT_RELAY_Pin;
+                          |VOLDWN_LED_Pin|SUB_RELAY_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -304,13 +304,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : OUT5_LED_Pin OUT6_LED_Pin VOLUP_LED_Pin SUB_RELAY_Pin
-                           CENTER_RELAY_Pin FRONT_SEL_LED_Pin REAR1_SEL_LED_Pin REAR2_SEL_LED_Pin
-                           CENTER_SEL_LED_Pin REAR2_RELAY_Pin REAR1_RELAY_Pin SUB_SEL_LED_Pin
+  /*Configure GPIO pins : OUT5_LED_Pin OUT6_LED_Pin VOLUP_LED_Pin FRONT_RELAY_Pin
+                           REAR1_RELAY_Pin SUB_SEL_LED_Pin REAR2_SEL_LED_Pin CENTER_SEL_LED_Pin
+                           REAR1_SEL_LED_Pin CENTER_RELAY_Pin REAR2_RELAY_Pin FRONT_SEL_LED_Pin
                            STATUS_Pin */
-  GPIO_InitStruct.Pin = OUT5_LED_Pin|OUT6_LED_Pin|VOLUP_LED_Pin|SUB_RELAY_Pin
-                          |CENTER_RELAY_Pin|FRONT_SEL_LED_Pin|REAR1_SEL_LED_Pin|REAR2_SEL_LED_Pin
-                          |CENTER_SEL_LED_Pin|REAR2_RELAY_Pin|REAR1_RELAY_Pin|SUB_SEL_LED_Pin
+  GPIO_InitStruct.Pin = OUT5_LED_Pin|OUT6_LED_Pin|VOLUP_LED_Pin|FRONT_RELAY_Pin
+                          |REAR1_RELAY_Pin|SUB_SEL_LED_Pin|REAR2_SEL_LED_Pin|CENTER_SEL_LED_Pin
+                          |REAR1_SEL_LED_Pin|CENTER_RELAY_Pin|REAR2_RELAY_Pin|FRONT_SEL_LED_Pin
                           |STATUS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;

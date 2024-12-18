@@ -904,9 +904,6 @@ int main(void)
  80006b4:	4b79      	ldr	r3, [pc, #484]	@ (800089c <main+0x438>)
  80006b6:	611c      	str	r4, [r3, #16]
 
-//  for(int i=0; i<NUM_OF_OUTPUTS; i++)
-//	  activeOutputs.output[i] = NULL;
-
   outputControl = new OutputControl(&currentMode, {GPIO_OUT1_GPIO_Port, GPIO_OUT1_Pin});
  80006b8:	2040      	movs	r0, #64	@ 0x40
  80006ba:	f001 fe49 	bl	8002350 <_Znwj>
@@ -1481,17 +1478,17 @@ static void MX_GPIO_Init(void)
  8000aa4:	2200      	movs	r2, #0
  8000aa6:	0018      	movs	r0, r3
  8000aa8:	f000 fc75 	bl	8001396 <HAL_GPIO_WritePin>
-                          |VOLDWN_LED_Pin|FRONT_RELAY_Pin, GPIO_PIN_RESET);
+                          |VOLDWN_LED_Pin|SUB_RELAY_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, OUT5_LED_Pin|OUT6_LED_Pin|VOLUP_LED_Pin|SUB_RELAY_Pin
+  HAL_GPIO_WritePin(GPIOB, OUT5_LED_Pin|OUT6_LED_Pin|VOLUP_LED_Pin|FRONT_RELAY_Pin
  8000aac:	4940      	ldr	r1, [pc, #256]	@ (8000bb0 <_ZL12MX_GPIO_Initv+0x188>)
  8000aae:	4b41      	ldr	r3, [pc, #260]	@ (8000bb4 <_ZL12MX_GPIO_Initv+0x18c>)
  8000ab0:	2200      	movs	r2, #0
  8000ab2:	0018      	movs	r0, r3
  8000ab4:	f000 fc6f 	bl	8001396 <HAL_GPIO_WritePin>
-                          |CENTER_RELAY_Pin|FRONT_SEL_LED_Pin|REAR1_SEL_LED_Pin|REAR2_SEL_LED_Pin
-                          |CENTER_SEL_LED_Pin|REAR2_RELAY_Pin|REAR1_RELAY_Pin|SUB_SEL_LED_Pin, GPIO_PIN_RESET);
+                          |REAR1_RELAY_Pin|SUB_SEL_LED_Pin|REAR2_SEL_LED_Pin|CENTER_SEL_LED_Pin
+                          |REAR1_SEL_LED_Pin|CENTER_RELAY_Pin|REAR2_RELAY_Pin|FRONT_SEL_LED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, GPIO_OUT1_Pin|GPIO_OUT_2_Pin, GPIO_PIN_RESET);
@@ -1511,12 +1508,12 @@ static void MX_GPIO_Init(void)
  8000ace:	f000 fc62 	bl	8001396 <HAL_GPIO_WritePin>
 
   /*Configure GPIO pins : OUT1_LED_Pin OUT2_LED_Pin OUT3_LED_Pin OUT4_LED_Pin
-                           VOLDWN_LED_Pin FRONT_RELAY_Pin */
+                           VOLDWN_LED_Pin SUB_RELAY_Pin */
   GPIO_InitStruct.Pin = OUT1_LED_Pin|OUT2_LED_Pin|OUT3_LED_Pin|OUT4_LED_Pin
  8000ad2:	193b      	adds	r3, r7, r4
  8000ad4:	4a35      	ldr	r2, [pc, #212]	@ (8000bac <_ZL12MX_GPIO_Initv+0x184>)
  8000ad6:	601a      	str	r2, [r3, #0]
-                          |VOLDWN_LED_Pin|FRONT_RELAY_Pin;
+                          |VOLDWN_LED_Pin|SUB_RELAY_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
  8000ad8:	193b      	adds	r3, r7, r4
  8000ada:	2201      	movs	r2, #1
@@ -1580,16 +1577,16 @@ static void MX_GPIO_Init(void)
  8000b30:	0010      	movs	r0, r2
  8000b32:	f000 faaf 	bl	8001094 <HAL_GPIO_Init>
 
-  /*Configure GPIO pins : OUT5_LED_Pin OUT6_LED_Pin VOLUP_LED_Pin SUB_RELAY_Pin
-                           CENTER_RELAY_Pin FRONT_SEL_LED_Pin REAR1_SEL_LED_Pin REAR2_SEL_LED_Pin
-                           CENTER_SEL_LED_Pin REAR2_RELAY_Pin REAR1_RELAY_Pin SUB_SEL_LED_Pin
+  /*Configure GPIO pins : OUT5_LED_Pin OUT6_LED_Pin VOLUP_LED_Pin FRONT_RELAY_Pin
+                           REAR1_RELAY_Pin SUB_SEL_LED_Pin REAR2_SEL_LED_Pin CENTER_SEL_LED_Pin
+                           REAR1_SEL_LED_Pin CENTER_RELAY_Pin REAR2_RELAY_Pin FRONT_SEL_LED_Pin
                            STATUS_Pin */
-  GPIO_InitStruct.Pin = OUT5_LED_Pin|OUT6_LED_Pin|VOLUP_LED_Pin|SUB_RELAY_Pin
+  GPIO_InitStruct.Pin = OUT5_LED_Pin|OUT6_LED_Pin|VOLUP_LED_Pin|FRONT_RELAY_Pin
  8000b36:	193b      	adds	r3, r7, r4
  8000b38:	4a22      	ldr	r2, [pc, #136]	@ (8000bc4 <_ZL12MX_GPIO_Initv+0x19c>)
  8000b3a:	601a      	str	r2, [r3, #0]
-                          |CENTER_RELAY_Pin|FRONT_SEL_LED_Pin|REAR1_SEL_LED_Pin|REAR2_SEL_LED_Pin
-                          |CENTER_SEL_LED_Pin|REAR2_RELAY_Pin|REAR1_RELAY_Pin|SUB_SEL_LED_Pin
+                          |REAR1_RELAY_Pin|SUB_SEL_LED_Pin|REAR2_SEL_LED_Pin|CENTER_SEL_LED_Pin
+                          |REAR1_SEL_LED_Pin|CENTER_RELAY_Pin|REAR2_RELAY_Pin|FRONT_SEL_LED_Pin
                           |STATUS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
  8000b3c:	193b      	adds	r3, r7, r4

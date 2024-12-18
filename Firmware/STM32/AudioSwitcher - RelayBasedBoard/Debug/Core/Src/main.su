@@ -7,8 +7,8 @@ C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher -
 C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher - RelayBasedBoard/Libraries/OutputControl/outputControl.hpp:26:8:virtual bool Output::isActive()	16	static
 C:/.Embedded/.GITHUB/bradfairman-audioswitcher-fw/Firmware/STM32/AudioSwitcher - RelayBasedBoard/Libraries/OutputControl/outputControl.hpp:68:3:OutputControl::OutputControl(OUTPUT_MODE_e*, GPIO_Pin_t)	32	static
 ../Core/Src/main.cpp:74:5:int main()	216	static
-../Core/Src/main.cpp:221:6:void SystemClock_Config()	88	static
-../Core/Src/main.cpp:260:13:void MX_GPIO_Init()	56	static
-../Core/Src/main.cpp:348:6:void Error_Handler()	8	static,ignoring_inline_asm
-../Core/Src/main.cpp:357:1:void __static_initialization_and_destruction_0(int, int)	64	static
-../Core/Src/main.cpp:357:1:cpp)	8	static
+../Core/Src/main.cpp:218:6:void SystemClock_Config()	88	static
+../Core/Src/main.cpp:257:13:void MX_GPIO_Init()	56	static
+../Core/Src/main.cpp:345:6:void Error_Handler()	8	static,ignoring_inline_asm
+../Core/Src/main.cpp:354:1:void __static_initialization_and_destruction_0(int, int)	64	static
+../Core/Src/main.cpp:354:1:cpp)	8	static
