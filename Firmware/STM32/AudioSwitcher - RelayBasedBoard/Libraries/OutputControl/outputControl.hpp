@@ -81,6 +81,7 @@ class OutputControl
 		uint8_t getMode(uint8_t buttonNumber);
 
 		void addOutput(Interface* output);
+		void removeOutput(Interface* output);
 		void removeAllOutputs();
 
 	private:

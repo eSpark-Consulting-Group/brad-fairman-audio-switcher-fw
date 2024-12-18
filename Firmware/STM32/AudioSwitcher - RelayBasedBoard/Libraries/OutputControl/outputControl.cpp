@@ -46,18 +46,24 @@ uint8_t OutputControl::getMode(uint8_t buttonNumber)
 
 	if((buttonNumber == OUT4_SW) && (currentMode < SUBWOOFER_MODE))
 	{
-		futureMode = 4 + currentMode;
+		futureMode = currentMode + 4;
 	}
 	else if((buttonNumber == OUT4_SW) && (currentMode < ALL_OFF_MODE))
 	{
-		futureMode = NO_CHANGE;
+		futureMode = currentMode - 4;
 	}
 	else if (buttonNumber < OUT4_SW){
-		futureMode = buttonNumber;
+		if((GPIO_PIN_SET == getState()) && !(buttonNumber ^ (currentMode&0x3)))
+			futureMode = ALL_OFF_MODE;
+		else
+			futureMode = buttonNumber;
 	}
 	else if (buttonNumber == OUT5_SW)
 	{
-		futureMode = ALL_ACTIVE_MODE;
+		if(GPIO_PIN_SET == getState())
+			futureMode = ALL_OFF_MODE;
+		else
+			futureMode = ALL_ACTIVE_MODE;
 	}
 
 	return futureMode;
@@ -76,6 +82,19 @@ void OutputControl::addOutput(Interface* output)
 	_state = GPIO_PIN_RESET;
 }
 
+void OutputControl::removeOutput(Interface* output)
+{
+  for(int i=0; i < (NUM_OF_OUTPUTS+1); i++)
+  {
+	  if(_output.output[i] == output)
+	  {
+		  _output.output[i]->stop();
+		  _output.output[i] = NULL;
+		  _active_outputs--;
+	  }
+  }
+}
+
 void OutputControl::removeAllOutputs()
 {
   for(int i=0; i < (NUM_OF_OUTPUTS+1); i++)
@@ -87,6 +106,7 @@ void OutputControl::removeAllOutputs()
 	  }
   }
   _active_outputs = 0;
+  _state = GPIO_PIN_RESET;
 }
 
 void OutputControl::turnOffAllOutputs()

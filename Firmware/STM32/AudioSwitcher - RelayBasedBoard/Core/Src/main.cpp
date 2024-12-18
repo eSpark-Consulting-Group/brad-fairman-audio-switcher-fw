@@ -131,7 +131,7 @@ int main(void)
 		  if(outputSW[i]->getButtonState())
 		  {
 			  OUTPUT_MODE_e mode = (OUTPUT_MODE_e)outputControl->getMode(i);
-			  if(mode != currentMode)
+			  if((mode != currentMode) && (mode != ALL_OFF_MODE))
 			  {
 				  switch(i)
 				  {
@@ -163,18 +163,25 @@ int main(void)
 						  {
 							  int lMode = (int)currentMode + (int)SUBWOOFER_MODE+1;
 							  currentMode = (OUTPUT_MODE_e)lMode;
+							  outputControl->addOutput(outputSW[OUT4_SW]);
 							  outputControl->addOutput(outputs[0]);
 							  outputControl->activate();
+						  }
+						  else if(currentMode < ALL_ACTIVE_MODE)
+						  {
+							  currentMode = mode;
+							  outputControl->removeOutput(outputSW[OUT4_SW]);
+							  outputControl->removeOutput(outputs[0]);
 						  }
 						  break;
 					  case OUT5_SW:
 						  outputControl->removeAllOutputs();
 						  outputControl->addOutput(outputSW[OUT5_SW]);
-						  outputControl->addOutput(outputs[0]);
 						  outputControl->addOutput(outputs[1]);
 						  outputControl->addOutput(outputs[2]);
 						  outputControl->addOutput(outputs[3]);
 						  outputControl->addOutput(outputs[4]);
+						  outputControl->addOutput(outputs[0]);
 						  outputControl->activate();
 						  currentMode = ALL_ACTIVE_MODE;
 						  break;
