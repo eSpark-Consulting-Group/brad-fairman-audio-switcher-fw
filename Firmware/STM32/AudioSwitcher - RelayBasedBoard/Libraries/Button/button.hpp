@@ -28,7 +28,7 @@ class Button : public Interface
     public:
         Button(GPIO_Pin_t pin, GPIO_Pin_t led, bool buttonType = true)
         : _pin(pin), _led_pin(led), _debounce_time(DEBOUNCE_TIME_MS), _last_debounce_time(0), _state(GPIO_PIN_SET),
-		  _last_button_state(GPIO_PIN_SET), _button_press_time(0), _is_active(false),
+		  _last_button_state(GPIO_PIN_SET), _trigger(GPIO_PIN_RESET), _button_press_time(0), _is_active(false),
 		  _is_output_control_button(buttonType), _triggerred(false)
         {   HAL_GPIO_WritePin(_led_pin.port, _led_pin.pin, GPIO_PIN_SET);     }
 

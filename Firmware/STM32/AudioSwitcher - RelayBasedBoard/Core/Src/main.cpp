@@ -188,7 +188,6 @@ int main(void)
 //					  case OUT6_SW:
 //						  break;
 				  }
-//				  outputControl->activate();
 			  }
 			  else
 			  {

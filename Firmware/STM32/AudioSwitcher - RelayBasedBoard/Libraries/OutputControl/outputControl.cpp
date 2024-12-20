@@ -60,7 +60,7 @@ uint8_t OutputControl::getMode(uint8_t buttonNumber)
 	}
 	else if (buttonNumber == OUT5_SW)
 	{
-		if(GPIO_PIN_SET == getState())
+		if((GPIO_PIN_SET == getState()) && (ALL_ACTIVE_MODE == currentMode))
 			futureMode = ALL_OFF_MODE;
 		else
 			futureMode = ALL_ACTIVE_MODE;
@@ -89,8 +89,10 @@ void OutputControl::removeOutput(Interface* output)
 	  if(_output.output[i] == output)
 	  {
 		  _output.output[i]->stop();
-		  _output.output[i] = NULL;
+		  for(int y = i; y < (NUM_OF_OUTPUTS+1); y++)
+		  	  _output.output[y] = ((y+1) < (NUM_OF_OUTPUTS+1)) ? _output.output[y+1] : NULL;
 		  _active_outputs--;
+		  break;
 	  }
   }
 }

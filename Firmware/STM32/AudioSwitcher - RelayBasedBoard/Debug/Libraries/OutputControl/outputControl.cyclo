@@ -1,8 +1,8 @@
 ../Libraries/OutputControl/outputControl.cpp:8:6:void OutputControl::activate()	5
 ../Libraries/OutputControl/outputControl.cpp:23:6:void OutputControl::process()	11
 ../Libraries/OutputControl/outputControl.cpp:37:6:bool OutputControl::getState()	1
-../Libraries/OutputControl/outputControl.cpp:42:9:uint8_t OutputControl::getMode(uint8_t)	11
+../Libraries/OutputControl/outputControl.cpp:42:9:uint8_t OutputControl::getMode(uint8_t)	13
 ../Libraries/OutputControl/outputControl.cpp:72:6:void OutputControl::addOutput(Interface*)	3
-../Libraries/OutputControl/outputControl.cpp:85:6:void OutputControl::removeOutput(Interface*)	3
-../Libraries/OutputControl/outputControl.cpp:98:6:void OutputControl::removeAllOutputs()	3
-../Libraries/OutputControl/outputControl.cpp:112:6:void OutputControl::turnOffAllOutputs()	5
+../Libraries/OutputControl/outputControl.cpp:85:6:void OutputControl::removeOutput(Interface*)	5
+../Libraries/OutputControl/outputControl.cpp:100:6:void OutputControl::removeAllOutputs()	3
+../Libraries/OutputControl/outputControl.cpp:114:6:void OutputControl::turnOffAllOutputs()	5
